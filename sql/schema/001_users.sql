@@ -1,4 +1,4 @@
-
+-- +goose up
 CREATE TABLE USERS (
     username varchar(255) UNIQUE NOT NULL,
     hash varchar(255) NOT NULL
@@ -21,3 +21,9 @@ CREATE TABLE COMMENTS (
     FOREIGN KEY (post_id) REFERENCES POSTS(post_id),
     FOREIGN KEY (username) REFERENCES USERS(username)
 );
+
+-- +goose down
+
+DROP TABLE COMMENTS;
+DROP TABLE POSTS;
+DROP TABLE USERS;
