@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,7 +9,6 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/Greeshmanth1909/CS_twitter/handlers"
-	"github.com/Greeshmanth1909/CS_twitter/internal/database"
 
 	_ "github.com/lib/pq"
 )
@@ -27,18 +25,6 @@ func main() {
 	dbURL := os.Getenv("URL")
 	fmt.Printf("Connecting to db with port %v and url %v\n", port, dbURL)
 
-	// open connection to database
-	db, error := sql.Open("postgres", dbURL)
-	if error != nil {
-		fmt.Println(error)
-		log.Fatal("Error establishing a connection to the database")
-	}
-
-	fmt.Println(db)
-
-	dbQueries := database.New(db)
-	apiConf.DB = dbQueries
-
 	mux := http.NewServeMux()
 
 	var server http.Server
@@ -47,8 +33,9 @@ func main() {
 
 	mux.HandleFunc("GET /v1/health", handlers.HealthHandler)
 	mux.HandleFunc("GET /v1/posts", handlers.GetPosts)
-	// mux.HandleFunc("POST /v1/login", usersHandler)
-	// mux.HandleFunc("POST /v1/signup", usersHandler)
+	mux.HandleFunc("POST /v1/login", handlers.LoginUser)
+	mux.HandleFunc("POST /v1/signup", handlers.SignupUser)
+	// mux.HandleFunc("POST /v1/create-post", handlers.)
 	// mux.Handle("GET /v1/users", authMiddleWare(http.HandlerFunc(getUsersHandler)))
 	// mux.Handle("POST /v1/feeds", authMiddleWare(http.HandlerFunc(createFeedHandler)))
 	// mux.HandleFunc("GET /v1/feeds", getFeedsHandler)
@@ -58,9 +45,3 @@ func main() {
 
 	server.ListenAndServe()
 }
-
-type apiConfig struct {
-	DB *database.Queries
-}
-
-var apiConf apiConfig
