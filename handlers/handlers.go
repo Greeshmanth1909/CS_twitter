@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"crypto/sha256"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -43,6 +42,7 @@ func init() {
 	apiConf.DB = dbQueries
 }
 
+// The HealthHandler is used to check the health of the server; it sends a 200-OK if the server is running.
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
@@ -61,10 +61,11 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(dbRes)
 }
 
+// The SignupUser handler checks weather a given username is taken and creates a new entry in the users table if it doesn't exist.
 func SignupUser(w http.ResponseWriter, r *http.Request) {
 	type body struct {
-		Username string `json:username`
-		Password string `json:password`
+		Username string `json:"username"`
+		Password string `json:"password"`
 	}
 	var req body
 	decoder := json.NewDecoder(r.Body)
@@ -99,23 +100,48 @@ func SignupUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+// The LoginUser handler sends a jwt if the user exists and the password-hash matches with the one in the database.
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	type body struct {
-		Username string `json:username`
-		Password string `json:password`
+		Username string `json:"username"`
+		Password string `json:"password"`
 	}
 	var req body
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&req)
 
-	var User database.User
-	User.Username = req.Username
+	ctx := context.TODO()
+	user, err := apiConf.DB.GetUser(ctx, req.Username)
 
-	hash := sha256.New()
-	hash.Write([]byte(req.Password))
-	hashed := hash.Sum(nil)
+	// if user doesn't exist
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(fmt.Sprintf("username: %v doesn't exist, please sign-up", req.Username)))
+		return
+	}
 
-	User.Hash = string(hashed)
+	hash := generateHash(req.Password)
+
+	if hash != user.Hash {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("Invalid password, try again"))
+		return
+	}
+
+	// generate jwt with username
+	jwt, err := generateJWT(req.Username)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	resBody, _ := json.Marshal(struct {
+		Token string `json:"token"`
+	}{Token: jwt})
 
 	w.WriteHeader(200)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(resBody)
 }
