@@ -1,11 +1,18 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
+
+	"github.com/Greeshmanth1909/CS_twitter/handlers"
+	"github.com/Greeshmanth1909/CS_twitter/internal/database"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -18,25 +25,30 @@ func main() {
 
 	port := os.Getenv("PORT")
 	dbURL := os.Getenv("URL")
-	fmt.Println(port, dbURL)
+	fmt.Printf("Connecting to db with port %v and url %v\n", port, dbURL)
+
 	// open connection to database
-	// db, error := sql.Open("postgres", dbURL)
-	// if error != nil {
-	//     log.Fatal("Error establishing a connection to the database")
-	// }
+	db, error := sql.Open("postgres", dbURL)
+	if error != nil {
+		fmt.Println(error)
+		log.Fatal("Error establishing a connection to the database")
+	}
 
-	// dbQueries := database.New(db)
-	// apiConf.DB = dbQueries
+	fmt.Println(db)
 
-	// mux := http.NewServeMux()
+	dbQueries := database.New(db)
+	apiConf.DB = dbQueries
 
-	// var server http.Server
-	// server.Addr = "localhost:" + port
-	// server.Handler = mux
+	mux := http.NewServeMux()
 
-	// mux.HandleFunc("GET /v1/healthz", healthHandler)
-	// mux.HandleFunc("GET /v1/err", errHandler)
-	// mux.HandleFunc("POST /v1/users", usersHandler)
+	var server http.Server
+	server.Addr = "localhost:" + port
+	server.Handler = mux
+
+	mux.HandleFunc("GET /v1/health", handlers.HealthHandler)
+	mux.HandleFunc("GET /v1/posts", handlers.GetPosts)
+	// mux.HandleFunc("POST /v1/login", usersHandler)
+	// mux.HandleFunc("POST /v1/signup", usersHandler)
 	// mux.Handle("GET /v1/users", authMiddleWare(http.HandlerFunc(getUsersHandler)))
 	// mux.Handle("POST /v1/feeds", authMiddleWare(http.HandlerFunc(createFeedHandler)))
 	// mux.HandleFunc("GET /v1/feeds", getFeedsHandler)
@@ -44,5 +56,11 @@ func main() {
 	// mux.HandleFunc("DELETE /v1/feed_follows/{feedFollowID}", deleteFeedFollows)
 	// mux.Handle("GET /v1/feed_follows", authMiddleWare(http.HandlerFunc(getFeedsByUserId)))
 
-	// server.ListenAndServe()
+	server.ListenAndServe()
 }
+
+type apiConfig struct {
+	DB *database.Queries
+}
+
+var apiConf apiConfig
