@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"context"
+	"crypto/sha256"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -57,4 +59,63 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println(dbRes)
+}
+
+func SignupUser(w http.ResponseWriter, r *http.Request) {
+	type body struct {
+		Username string `json:username`
+		Password string `json:password`
+	}
+	var req body
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&req)
+
+	ctx := context.TODO()
+	_, err := apiConf.DB.GetUser(ctx, req.Username)
+
+	if err == nil {
+		// A user with existing username was found!
+		w.WriteHeader(http.StatusConflict)
+		w.Write([]byte(fmt.Sprintf("username: %v already taken", req.Username)))
+		return
+	}
+
+	passwordHash := generateHash(req.Password)
+
+	// add to the database
+	var addUserParams database.AddUserParams
+	addUserParams.Username = req.Username
+	addUserParams.Hash = passwordHash
+
+	user, err := apiConf.DB.AddUser(ctx, addUserParams)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	res, _ := json.Marshal(user)
+	w.WriteHeader(http.StatusCreated)
+	w.Write(res)
+}
+
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	type body struct {
+		Username string `json:username`
+		Password string `json:password`
+	}
+	var req body
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&req)
+
+	var User database.User
+	User.Username = req.Username
+
+	hash := sha256.New()
+	hash.Write([]byte(req.Password))
+	hashed := hash.Sum(nil)
+
+	User.Hash = string(hashed)
+
+	w.WriteHeader(200)
 }
