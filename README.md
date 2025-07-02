@@ -67,9 +67,7 @@ POST /v1/create-posts
 Content-Type: application/json
 
 {
-    {
-      "post": "second post"
-    }
+  "post": "second post"
 }
 ```
 Responds with post details and 202 status code
@@ -79,29 +77,28 @@ Responds with post details and 202 status code
 
 ### Create Comment (Protected route)
 ```http
-POST /v1/create-posts
+POST /v1/create-comment
 Content-Type: application/json
 
 {
-    {
-      "post": "second post"
-    }
+  "comment": "comment",
+  "post_id": "uuid of post"
 }
 ```
 Responds with post details and 202 status code
 ```
-{"PostID":"3579872a-ddd1-4736-b531-2d3fe43b44cb","Post":"second post","Username":"User"}
+{"CommentID":"e15487e1-95fd-4cfb-b810-ce5c8b8d9968","Comment":"comment","PostID":"uuid of post","Username":"user1"}
 
 ```
 
 ## Architecture
 ### Database
-Since all the data that needs to be stored is text based and is structured into posts and comments, a relational database like Postgres was choosen. The application uses Postgres running in a docker container with docker compose.
+Since all the data that needs to be stored is text based and is structured into posts and comments, a relational database like Postgres was chosen. The application uses Postgres running in a docker container with docker compose.
 `sqlc` generates go code to query and update the database.
 `goose` is used to manage all database migrations.
 
 ### Programming language
-Go was choosen for its simplicity and robust standary library.
+Go was choosen for its simplicity and robust standard library.
 
 
 
