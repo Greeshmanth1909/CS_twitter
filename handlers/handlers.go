@@ -61,10 +61,10 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(fmt.Sprintf("%v", err)))
 	}
 
-	fmt.Println(feed)
 	type ResponseStruct struct {
 		Username string
 		Post     string
+		Post_id  uuid.UUID
 		Comments [][]string
 	}
 	var res []ResponseStruct
@@ -73,6 +73,7 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		new := ResponseStruct{}
 		new.Username = feed[i].UsernamePost
 		new.Post = feed[i].Post
+		new.Post_id = feed[i].PostID
 
 		// process aggregated strings; get rid of {} and ""
 		c := string(feed[i].Comments.([]uint8))
@@ -81,11 +82,11 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		c = strings.TrimSuffix(c, "}")
 		stringSlice := strings.Split(c, ",")
 
-		for j := range stringSlice {
-			if len(stringSlice[j]) >= 2 {
-				stringSlice[j] = stringSlice[j][1 : len(stringSlice[j])-1]
-			}
-		}
+		// for j := range stringSlice {
+		// 	if len(stringSlice[j]) >= 2 {
+		// 		stringSlice[j] = stringSlice[j][1 : len(stringSlice[j])-1]
+		// 	}
+		// }
 
 		d = strings.TrimPrefix(d, "{")
 		d = strings.TrimSuffix(d, "}")
@@ -201,6 +202,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	ctx := context.TODO()
 	res, err := apiConf.DB.CreateUserPost(ctx, createUserPostParams)
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(fmt.Sprintf("%v", err)))
 		return

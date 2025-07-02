@@ -2,27 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CS_twitter</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>CS Twitter</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>CS_twitter</h1>
-
-    <div id="auth-section">
-      <input type="text" id="username" placeholder="Username" />
-      <input type="password" id="password" placeholder="Password" />
-      <button onclick="signup()">Signup</button>
-      <button onclick="login()">Login</button>
+  <header>
+    <h1>CS Twitter</h1>
+    <div class="auth-buttons">
+      <button onclick="location.href='login.html'">Login</button>
+      <button onclick="location.href='signup.html'">Signup</button>
     </div>
+  </header>
 
-    <div id="post-section" class="hidden">
-      <textarea id="new-post" placeholder="What's on your mind?"></textarea>
-      <button onclick="createPost()">Post</button>
-    </div>
+  <div class="post-section">
+    <label for="postContent"><strong>What's on your mind?</strong></label><br>
+    <textarea id="postContent" placeholder="Type your post here..."></textarea><br>
+    <button onclick="submitPost()">Post</button>
+  </div>
+  <br>
 
-    <div id="posts"></div>
+  <div id="feed">
+    <!-- Posts and comments will be rendered here -->
   </div>
 
   <script src="script.js"></script>
