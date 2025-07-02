@@ -97,7 +97,11 @@ Responds with post details and 202 status code
 ## Architecture
 ### Database
 Since all the data that needs to be stored is text based and is structured into posts and comments, a relational database like Postgres was choosen. The application uses Postgres running in a docker container with docker compose.
+`sqlc` generates go code to query and update the database.
+`goose` is used to manage all database migrations.
 
 ### Programming language
 Go was choosen for its simplicity and robust standary library.
+
+
 
