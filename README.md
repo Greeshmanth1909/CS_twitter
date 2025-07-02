@@ -1,5 +1,5 @@
 # CS_twitter
-CS_twitter is a simple clone that lets users Post text based posts and comment on them.
+CS_twitter is a simple application that lets users Post text based posts and comment on them.
 
 ## Build from source
 ### Requirements
