@@ -19,6 +19,16 @@ CS_twitter is a simple application that lets users Post text based posts and com
 7. Set the port of the server in the `.env` file the default is 8080.
 8. Run with `./main`
 
+### Usage
+1. visit `localhost:8080/` to access the frontend.
+2. Please login/signup to post/comment.
+3. Rich text support has been added with markdown syntax.
+```
+For bold, place sentence between a pair of two asterisks (**) eg. one **bold** word in sentence.
+For italic, place sentence between a pair of asterisks (*) eg. one *italic* word in sentence.
+For Hyperlinks, place the text to be displayed between square brackets [] followed by the http/https link between parenthesis (). eg. [just google it](https://www.google.com/)
+```
+
 ## Routes
 
 ### Signup User
