@@ -14,7 +14,7 @@ CS_twitter is a simple clone that lets users Post text based posts and comment o
 2. Install dependency with `go mod tidy`
 3. Run the postgres docker container with `docker-compose up`
 4. Run database migrations with `make migrate-up` and `make migrate-down`
-5. Run `sqlc generate` to generate database queries for go
+5. Run `sqlc generate` to generate database queries for go. This creates a `internal/database` directory.
 6. Run `go build .` in the root directory to build the binary
 7. Set the port of the server in the `.env` file
 8. Run with `./main`
