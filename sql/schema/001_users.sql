@@ -7,7 +7,7 @@ CREATE TABLE USERS (
 CREATE TABLE POSTS (
     post_id uuid DEFAULT gen_random_uuid(),
     post TEXT NOT NULL,
-    username varchar(255),
+    username varchar(255) NOT NULL,
     PRIMARY KEY (post_id),
     FOREIGN KEY (username) REFERENCES USERS(username)
 );
@@ -15,8 +15,8 @@ CREATE TABLE POSTS (
 CREATE TABLE COMMENTS (
     comment_id uuid DEFAULT gen_random_uuid(),
     comment TEXT NOT NULL,
-    post_id uuid,
-    username varchar(255),
+    post_id uuid NOT NULL,
+    username varchar(255) NOT NULL,
     PRIMARY KEY (comment_id),
     FOREIGN KEY (post_id) REFERENCES POSTS(post_id),
     FOREIGN KEY (username) REFERENCES USERS(username)
