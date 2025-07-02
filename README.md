@@ -11,12 +11,13 @@ CS_twitter is a simple clone that lets users Post text based posts and comment o
 
 ### Build instructions
 1. Clone the repo with `git clone https://github.com/Greeshmanth1909/CS_twitter.git`
-2. Run the postgres docker container with `docker-compose up`
-3. Run database migrations with `goose -dir sql/schema postgres "postgres://myuser:mypassword@localhost:5432/mydb?sslmode=disable" up`
-4. Run `sqlc generate` to generate database queries for go
-5. Run `go build .` in the root directory to build the binary
-6. Set the port of the server in the `.env` file
-7. Run with `./main`
+2. Install dependency with `go mod tidy`
+3. Run the postgres docker container with `docker-compose up`
+4. Run database migrations with `goose -dir sql/schema postgres "postgres://myuser:mypassword@localhost:5432/mydb?sslmode=disable" up`
+5. Run `sqlc generate` to generate database queries for go
+6. Run `go build .` in the root directory to build the binary
+7. Set the port of the server in the `.env` file
+8. Run with `./main`
 
 ## Routes
 
@@ -95,7 +96,7 @@ Responds with post details and 202 status code
 
 ## Architecture
 ### Database
-Since all the data that needs to be stored is text based, a relational database like Postgres was choosen. The application uses Postgres running in a docker container with docker compose.
+Since all the data that needs to be stored is text based and is structured into posts and comments, a relational database like Postgres was choosen. The application uses Postgres running in a docker container with docker compose.
 
 ### Programming language
 Go was choosen for its simplicity and robust standary library.
