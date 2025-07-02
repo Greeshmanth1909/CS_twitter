@@ -15,9 +15,9 @@ CS_twitter is a simple application that lets users Post text based posts and com
 3. Run the postgres docker container with `docker-compose up`
 4. Run database migrations with `make migrate-up` and `make migrate-down`
 5. Run `sqlc generate` to generate database queries for go. This creates a `internal/database` directory.
-6. Run `go build .` in the root directory to build the binary
+6. Run `go build .` or `make build` in the root directory to build the binary
 7. Set the port of the server in the `.env` file the default is 8080.
-8. Run with `./main`
+8. Run with `./main` or `make run`
 
 ### Usage
 1. visit `localhost:8080/` to access the frontend.
