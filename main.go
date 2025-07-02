@@ -28,6 +28,9 @@ func main() {
 	server.Addr = "localhost:" + port
 	server.Handler = mux
 
+	fileServer := http.FileServer(http.Dir("./frontend"))
+	mux.Handle("/", fileServer)
+
 	mux.HandleFunc("GET /v1/health", handlers.HealthHandler)
 	mux.HandleFunc("GET /v1/posts", handlers.GetPosts)
 	mux.HandleFunc("POST /v1/login", handlers.LoginUser)
