@@ -34,6 +34,5 @@ func main() {
 	mux.HandleFunc("POST /v1/signup", handlers.SignupUser)
 	mux.Handle("POST /v1/create-post", handlers.AuthMiddleWare(http.HandlerFunc(handlers.CreatePost)))
 	mux.Handle("POST /v1/create-comment", handlers.AuthMiddleWare(http.HandlerFunc(handlers.CreateComment)))
-
 	server.ListenAndServe()
 }

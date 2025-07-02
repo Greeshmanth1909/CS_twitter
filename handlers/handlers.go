@@ -50,6 +50,7 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))
 }
 
+// The GetPosts handler returns all the posts, corresponding comments and associated data like username etc.
 func GetPosts(w http.ResponseWriter, r *http.Request) {
 	ctx := context.TODO()
 	feed, err := apiConf.DB.GetFeed(ctx)
@@ -72,12 +73,14 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		new := ResponseStruct{}
 		new.Username = feed[i].UsernamePost
 		new.Post = feed[i].Post
+
+		// process aggregated strings; get rid of {} and ""
 		c := string(feed[i].Comments.([]uint8))
 		d := string(feed[i].CommenterUsernames.([]uint8))
-
 		c = strings.TrimPrefix(c, "{")
 		c = strings.TrimSuffix(c, "}")
 		stringSlice := strings.Split(c, ",")
+
 		for j := range stringSlice {
 			if len(stringSlice[j]) >= 2 {
 				stringSlice[j] = stringSlice[j][1 : len(stringSlice[j])-1]
@@ -87,13 +90,12 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		d = strings.TrimPrefix(d, "{")
 		d = strings.TrimSuffix(d, "}")
 
-		comments_u := Zip(stringSlice, strings.Split(d, ","))
+		comments_u := Zip(stringSlice, strings.Split(d, ",")) // zip comments and corresponding usernames
 		new.Comments = comments_u
 		res = append(res, new)
 	}
 
 	resp, _ := json.Marshal(res)
-
 	w.Write(resp)
 }
 
@@ -124,16 +126,14 @@ func SignupUser(w http.ResponseWriter, r *http.Request) {
 	addUserParams.Username = req.Username
 	addUserParams.Hash = passwordHash
 
-	user, err := apiConf.DB.AddUser(ctx, addUserParams)
+	_, err = apiConf.DB.AddUser(ctx, addUserParams)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(fmt.Sprintf("%v", err)))
 		return
 	}
 
-	res, _ := json.Marshal(user)
 	w.WriteHeader(http.StatusCreated)
-	w.Write(res)
 }
 
 // The LoginUser handler sends a jwt if the user exists and the password-hash matches with the one in the database.
@@ -164,7 +164,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// generate jwt with username
+	// generate jwt with username included in the claims
 	jwt, err := generateJWT(req.Username)
 
 	if err != nil {
@@ -182,6 +182,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(resBody)
 }
 
+// The CreatePost handler creates a post by uploading it to the database along with the username from middleware. This is a protected route i.e. needs jwt from the login handler.
 func CreatePost(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value(jwtClaims).(jwt.MapClaims)
 	username := claims["username"].(string)
@@ -216,6 +217,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	w.Write(responseJson)
 }
 
+// The CreateComments handler creates a comment on a post, it needs the post's post_id. It is a also a protected route.
 func CreateComment(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value(jwtClaims).(jwt.MapClaims)
 	username := claims["username"].(string)
