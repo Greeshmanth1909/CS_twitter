@@ -47,3 +47,13 @@ func verifyToken(tokenStr string) (jwt.MapClaims, error) {
 
 	return claims, nil
 }
+
+func Zip(A []string, B []string) [][]string {
+	out := [][]string{}
+
+	for i := range A {
+		new := []string{A[i], B[i]}
+		out = append(out, new)
+	}
+	return out
+}
