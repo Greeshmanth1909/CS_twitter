@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CS_twitter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>CS_twitter</h1>
+
+    <div id="auth-section">
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="signup()">Signup</button>
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div id="post-section" class="hidden">
+      <textarea id="new-post" placeholder="What's on your mind?"></textarea>
+      <button onclick="createPost()">Post</button>
+    </div>
+
+    <div id="posts"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
