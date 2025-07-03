@@ -1,7 +1,11 @@
 # CS_twitter
 CS_twitter is a simple application that lets users Post text based posts and comment on them.
 
+<img width="1388" alt="Screenshot 2025-07-03 at 5 35 15 AM" src="https://github.com/user-attachments/assets/9b132cb3-6e54-481d-af36-f06f0e0471fd" />
+
+
 ## Build from source
+
 ### Requirements
 - Go `version 1.24`
 - Postgres
