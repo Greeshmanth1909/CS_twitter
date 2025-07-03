@@ -15,7 +15,7 @@ CS_twitter is a simple application that lets users Post text based posts and com
 
 ### Build instructions
 1. Clone the repo with `git clone https://github.com/Greeshmanth1909/CS_twitter.git`
-2. Install dependency with `go mod tidy`
+2. Install dependencies with `go mod tidy`
 3. Run the postgres docker container with `docker-compose up`
 4. Run database migrations with `make migrate-up` and `make migrate-down`
 5. Run `sqlc generate` to generate database queries for go. This creates a `internal/database` directory.
