@@ -16,11 +16,10 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     return res.json();
   })
   .then(data => {
-    // Assume the server returns a JWT token
     localStorage.setItem("token", data.token);
     localStorage.setItem("username", username);
     alert("Login successful!");
-    window.location.href = "index.html"; // redirect back to feed
+    window.location.href = "index.html";
   })
   .catch(err => {
     alert("Login failed: " + err.message);
