@@ -12,11 +12,14 @@ document.getElementById("signupForm").addEventListener("submit", function (e) {
     body: JSON.stringify({ username, password })
   })
   .then(res => {
-    if (!res.ok) throw new Error("Signup failed");
-  })
-  .then(data => {
-    alert("Signup successful!");
-    window.location.href = "index.html";
+    if (res.status != 201) {
+        alert("username taken!");
+        return;
+    } else {
+        alert("Signup successful!");
+        window.location.href = "index.html";
+    }
+    
   })
   .catch(err => alert("Error: " + err.message));
 });

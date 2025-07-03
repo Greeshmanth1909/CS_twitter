@@ -38,8 +38,6 @@ func init() {
 		log.Fatal("Error establishing a connection to the database")
 	}
 
-	fmt.Println(db)
-
 	dbQueries := database.New(db)
 	apiConf.DB = dbQueries
 }
@@ -82,11 +80,11 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
 		c = strings.TrimSuffix(c, "}")
 		stringSlice := strings.Split(c, ",")
 
-		// for j := range stringSlice {
-		// 	if len(stringSlice[j]) >= 2 {
-		// 		stringSlice[j] = stringSlice[j][1 : len(stringSlice[j])-1]
-		// 	}
-		// }
+		for j := range stringSlice {
+			if len(stringSlice[j]) >= 2 && strings.Contains(stringSlice[j], " ") {
+				stringSlice[j] = stringSlice[j][1 : len(stringSlice[j])-1]
+			}
+		}
 
 		d = strings.TrimPrefix(d, "{")
 		d = strings.TrimSuffix(d, "}")

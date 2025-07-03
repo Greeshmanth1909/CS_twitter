@@ -1,11 +1,3 @@
-function login() {
-  alert("Login clicked");
-}
-
-function signup() {
-  alert("Signup clicked");
-}
-
 function submitPost() {
   const content = document.getElementById("postContent").value;
   if (!content.trim()) {
@@ -90,11 +82,11 @@ function loadPosts() {
             const c = document.createElement("div");
             c.className = "comment";
 
-            var formattedText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
-            formattedText = formattedText.replace(/\*(.*?)\*/g, "<em>$1</em>");
+            var formattedText = text.replace(/\*\*(.*?)\*\*/g, `<b>$1</b>`);
+            formattedText = formattedText.replace(/\*(.*?)\*/g, `<em>$1</em>`);
 
             // for hyperlinks [text](url)
-            formattedText = formattedText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, "<a href=$2>$1</a>");
+            formattedText = formattedText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, `<a href=$2>$1</a>`);
 
             c.innerHTML = `<strong>${commenter}:</strong> ${formattedText}`;
             commentsDiv.appendChild(c);
@@ -124,7 +116,7 @@ function loadPosts() {
       });
     })
     .catch(err => {
-      document.getElementById("feed").textContent = "Failed to load posts.";
+      document.getElementById("feed").textContent = "No posts yet.";
       console.error(err);
     });
 }
