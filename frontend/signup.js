@@ -1,3 +1,5 @@
+
+// send signup req to backend on submit/
 document.getElementById("signupForm").addEventListener("submit", function (e) {
   e.preventDefault();
 

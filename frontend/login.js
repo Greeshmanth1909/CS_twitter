@@ -1,3 +1,4 @@
+//send login req on submit
 document.getElementById("loginForm").addEventListener("submit", function (e) {
   e.preventDefault();
 

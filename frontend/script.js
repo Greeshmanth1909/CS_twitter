@@ -1,3 +1,5 @@
+
+// submitPost is used to send a post request to the backend with post data.
 function submitPost() {
   const content = document.getElementById("postContent").value;
   if (!content.trim()) {
@@ -31,6 +33,7 @@ function submitPost() {
   .catch(err => alert("Error: " + err.message));
 }
 
+// submitComment is used to send a post request to the backend with the comment and post data.
 function submitComment(postId) {
   const input = document.getElementById(`comment-input-${postId}`);
   const comment = input.value;
@@ -60,6 +63,7 @@ function submitComment(postId) {
   .catch(err => alert("Error: " + err.message));
 }
 
+// loadPosts fetches post and comment data and displays it on the homepage.
 function loadPosts() {
   fetch("/v1/posts")
     .then(res => res.json())
