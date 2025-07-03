@@ -28,6 +28,7 @@ For bold, place sentence between a pair of two asterisks (**) eg. one **bold** w
 For italic, place sentence between a pair of asterisks (*) eg. one *italic* word in sentence.
 For Hyperlinks, place the text to be displayed between square brackets [] followed by the http/https link between parenthesis (). eg. [just google it](https://www.google.com/)
 ```
+Note: Please login/signup to post/comment. to switch to different account, login again with that account's credentials.
 
 ## Routes
 
