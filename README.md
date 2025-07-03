@@ -27,11 +27,11 @@ CS_twitter is a simple application that lets users Post text based posts and com
 1. visit `localhost:8080/` to access the frontend.
 2. Please login/signup to post/comment.
 3. Rich text support has been added with markdown syntax.
-```
-For bold, place sentence between a pair of two asterisks (**) eg. one **bold** word in sentence.
-For italic, place sentence between a pair of asterisks (*) eg. one *italic* word in sentence.
-For Hyperlinks, place the text to be displayed between square brackets [] followed by the http/https link between parenthesis (). eg. [just google it](https://www.google.com/)
-```
+
+- For bold, place sentence between a pair of two asterisks (**) `eg. one **bold** word in sentence.`
+- For italic, place sentence between a pair of asterisks (*) eg. `one *italic* word in sentence.`
+- For Hyperlinks, place the text to be displayed between square brackets [] followed by the http/https link between parenthesis (). `eg. [google](https://www.google.com/)`
+
 Note: Please login/signup to post/comment. to switch to different account, login again with that account's credentials.
 
 ## Routes
@@ -115,5 +115,6 @@ Since all the data that needs to be stored is text based and is structured into 
 ### Programming language
 Go was choosen for its simplicity and robust standard library.
 
-
+### The Frontend
+The frontend was built with vanilla HTML, css and javascript to exhibit basic functionality of the backend and integrate rich-text support.
 
